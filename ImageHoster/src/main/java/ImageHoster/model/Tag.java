@@ -1,5 +1,7 @@
 package ImageHoster.model;
 
+//import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
 //@Table annotation provides more options to customize the mapping.
 //Here the name of the table to be created in the database is explicitly mentioned as 'Tags'. Hence the table named 'Tags' will be created in the database with all the columns mapped to all the attributes in 'Tag' class
 @Table(name = "Tags")
+//@NoArgsConstructor
 public class Tag {
 
     //@Id annotation specifies that the corresponding attribute is a primary key

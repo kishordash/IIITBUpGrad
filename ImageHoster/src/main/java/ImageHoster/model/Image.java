@@ -1,5 +1,7 @@
 package ImageHoster.model;
 
+//import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.List;
 //@Table annotation provides more options to customize the mapping.
 //Here the name of the table to be created in the database is explicitly mentioned as 'images'. Hence the table named 'images' will be created in the database with all the columns mapped to all the attributes in 'Image' class
 @Table(name = "images")
-
+//@NoArgsConstructor
 public class Image {
 
     //@Id annotation specifies that the corresponding attribute is a primary key
@@ -41,7 +43,7 @@ public class Image {
     //The 'images' table is mapped to 'users' table with Many:One mapping
     //One image can have only one user (owner) but one user can have multiple images
     //FetchType is EAGER
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     //Below annotation indicates that the name of the column in 'images' table referring the primary key in 'users' table will be 'user_id'
     @JoinColumn(name = "user_id")
     private User user;
@@ -55,7 +57,7 @@ public class Image {
     public Image() {
     }
 
-    public Image(int id, String title, String imageFile, Date date) {
+    /*public Image(int id, String title, String imageFile, Date date) {
         this.id = id;
         this.title = title;
         this.imageFile = imageFile;
@@ -68,7 +70,8 @@ public class Image {
         this.imageFile = imageFile;
         this.description = description;
         this.date = date;
-    }
+    }*/
+
 
 
     public Integer getId() {

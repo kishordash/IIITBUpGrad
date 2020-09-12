@@ -1,5 +1,7 @@
 package ImageHoster.model;
 
+//import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 //@Table annotation provides more options to customize the mapping.
 //Here the name of the table to be created in the database is explicitly mentioned as 'users'. Hence the table named 'users' will be created in the database with all the columns mapped to all the attributes in 'User' class
 @Table(name = "users")
+//@NoArgsConstructor
 public class User {
 
     //@Id annotation specifies that the corresponding attribute is a primary key
@@ -33,6 +36,8 @@ public class User {
     @JoinColumn(name = "profile_id")
     private UserProfile profile;
 
+    public User() {
+    }
 
     //The 'users' table is referenced by the 'images' table
     //The table (primary key) is referenced by the 'user' field in the 'images' table
