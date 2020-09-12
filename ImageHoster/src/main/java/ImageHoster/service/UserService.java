@@ -32,4 +32,37 @@ public class UserService {
         }
     }
 
+    public boolean validatePassword(User user) {
+
+
+        if (user.getPassword().isEmpty())
+            return false;
+        else if (user.getPassword().length() < 3)
+            return false;
+        else {
+            int charCount = 0;
+            int numCount = 0;
+            int splCharCount = 0;
+            for (int i = 0; i < user.getPassword().length(); i++) {
+
+                char ch = user.getPassword().charAt(i);
+
+                if (is_Numeric(ch)) numCount++;
+                else if (is_Letter(ch)) charCount++;
+                else splCharCount ++;
+            }
+
+            return (numCount >= 1 && charCount >= 1 && splCharCount >= 1);
+        }
+    }
+
+    private boolean is_Letter(char ch) {
+        ch = Character.toUpperCase(ch);
+        return (ch >= 'A' && ch <= 'Z');
+    }
+
+    private boolean is_Numeric(char ch) {
+
+        return (ch >= '0' && ch <= '9');
+    }
 }
