@@ -43,7 +43,7 @@ public class Image {
     //The 'images' table is mapped to 'users' table with Many:One mapping
     //One image can have only one user (owner) but one user can have multiple images
     //FetchType is EAGER
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     //Below annotation indicates that the name of the column in 'images' table referring the primary key in 'users' table will be 'user_id'
     @JoinColumn(name = "user_id")
     private User user;
@@ -53,6 +53,13 @@ public class Image {
     //Since the mapping is Many to Many, a new table will be generated containing the two columns both referencing to the primary key of both the tables ('images', 'tags')
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
+
+    //The attribute contains a list of all the comments on an image
+    //Note that no column will be generated for this attribute in the database instead a new table will be created
+    //Since the mapping is One to Many, a new table will be generated containing the two columns
+    // both referencing to the primary key of both the tables ('images', 'comments')
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 
     public Image() {
     }
@@ -128,5 +135,13 @@ public class Image {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
