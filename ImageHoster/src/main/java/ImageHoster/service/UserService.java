@@ -32,6 +32,9 @@ public class UserService {
         }
     }
 
+    //Validate password method to heck on the strength of the password entered by the user
+    //at the time of registration. This method checks for having at least the length should be of 3 and
+    // should have at least one Letter (Upper/Lower case), one number (0 - 9) and one Special Character.
     public boolean validatePassword(User user) {
 
 
@@ -40,17 +43,20 @@ public class UserService {
         else if (user.getPassword().length() < 3)
             return false;
         else {
-            int charCount = 0;
+            String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{3,}";
+            return user.getPassword().matches(pattern);
+
+            /*int charCount = 0;
             int numCount = 0;
             int splCharCount = 0;
             for (int i = 0; i < user.getPassword().length(); i++) {
-
                 char ch = user.getPassword().charAt(i);
-
                 if (is_Numeric(ch)) numCount++;
                 else if (is_Letter(ch)) charCount++;
-                else splCharCount ++;
-            }
+                else if (is_SpecialChar(ch))
+                    splCharCount++;
+                }
+
 
             return (numCount >= 1 && charCount >= 1 && splCharCount >= 1);
         }
@@ -65,4 +71,14 @@ public class UserService {
 
         return (ch >= '0' && ch <= '9');
     }
+
+    private boolean is_SpecialChar(Char ch){
+        String pattern = "(?=.*[@#$%^&+=])";
+        return ch.matches(pattern);
+
+    }*/
+        }
+    }
 }
+
+
