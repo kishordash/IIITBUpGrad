@@ -30,8 +30,7 @@ public class ImageController {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private CommentService commentService;
+
 
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
@@ -123,7 +122,7 @@ public class ImageController {
         Image image = imageService.getImage(imageId);
         model.addAttribute("image", image);
 
-        if(image.getUser().getId() != user.getId()) {
+        if(image.getUser().getId() != user.getId()) { //if (user.getId() == image.getUser().getId())
             String error = "Only the owner of the image can edit the image"; //Adding this Error string
             model.addAttribute("editError", error); // Adding the string in the Model type object
             model.addAttribute("comments", image.getComments());
@@ -133,6 +132,7 @@ public class ImageController {
             String tags = convertTagsToString(image.getTags());
            // model.addAttribute("image", image);
             model.addAttribute("tags", tags);
+            //model.addAttribute("comments", image.getComments()); //added to return comments with edit
             return "images/edit";
         }
     }
@@ -155,6 +155,7 @@ public class ImageController {
 
         String updatedImageData = convertUploadedFileToBase64(file);
         List<Tag> imageTags = findOrCreateTags(tags);
+        //List<Comment> comments = image.getComments(); //Get the list of comments
 
         if (updatedImageData.isEmpty())
             updatedImage.setImageFile(image.getImageFile());
@@ -167,9 +168,10 @@ public class ImageController {
         updatedImage.setUser(user);
         updatedImage.setTags(imageTags);
         updatedImage.setDate(new Date());
+        updatedImage.setComments(image.getComments());
 
         imageService.updateImage(updatedImage);
-        return "redirect:/images/" + updatedImage.getTitle();
+        return "redirect:/images/" + imageId +"/" + updatedImage.getTitle();
     }
 
 
@@ -188,6 +190,12 @@ public class ImageController {
             model.addAttribute("tags", image.getTags());
             return "images/image";
         } else {
+            /*List<Comment> comments = image.getComments();
+            for (Comment comment: comments) {
+                commentService.deleteComment(comment);
+            }*/
+            //commentService.deleteComments(imageId);
+
             imageService.deleteImage(imageId);
             return "redirect:/images";
         }
@@ -236,29 +244,5 @@ public class ImageController {
         return tagString.toString();
     }
 
-    //This Controller class method "newComment" maps to the request URL "/image/{imageId}/{imageTitle}/comments"
-    // for creating a new comment. After persisting the comment in the database, the controller logic redirects
-    // to the showImage()’method in ‘ImageController’ displaying all the details of that particular image.
 
-    @RequestMapping("/image/{imageId}/{imageTitle}/comments")
-    public String newComment(@PathVariable(name = "imageId") Integer imageId,
-                             @PathVariable(name = "imageTitle") String imageTitle,
-                             @RequestParam(name = "comment") String commentText,
-                             Model model, HttpSession session) {
-        Comment comment = new Comment();
-
-        User user = (User) session.getAttribute("loggeduser");
-        comment.setUser(user);
-
-        comment.setCreatedDate(LocalDate.now());
-        comment.setText(commentText);
-
-        Image image = imageService.getImage(imageId);
-        comment.setImage(image);
-
-        image.getComments().add(comment);
-        commentService.createComment(comment);
-        imageService.updateImage(image);
-        return showImage(imageId, imageTitle, model);
-    }
 }

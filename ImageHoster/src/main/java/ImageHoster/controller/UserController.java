@@ -41,9 +41,12 @@ public class UserController {
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
     public String registerUser(User user, Model model) {
-        if(userService.validatePassword(user)) {
+        String pattern = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{3,}";
+        if(user.getPassword().matches(pattern))
+        //if(userService.validatePassword(user))
+        {
             userService.registerUser(user);
-            return "redirect:/users/login";
+            return "users/login";
         }
         else {
             String error = "Password must contain atleast 1 alphabet, 1 number & 1 special character";

@@ -1,4 +1,3 @@
-/*
 package ImageHoster.controller;
 
 
@@ -28,7 +27,7 @@ public class CommentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+   @MockBean
     private CommentService commentService;
 
     @MockBean
@@ -63,6 +62,6 @@ public class CommentControllerTest {
                 .param("comment", "This comment is for testing purpose")
                 .session(session))
                 .andExpect(redirectedUrl("/images/1/new"));
-    }
+                 ///images/1/new -- original test
 }
-*/
+}
